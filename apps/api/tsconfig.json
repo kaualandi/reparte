@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "types": ["bun"],
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "paths": {
+      "@reparte/types": ["../../packages/types/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "scripts/**/*.ts", "drizzle.config.ts", "../../packages/types/src/**/*.ts"]
+}

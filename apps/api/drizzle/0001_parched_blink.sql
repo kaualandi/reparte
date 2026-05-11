@@ -1,0 +1,1 @@
+ALTER TABLE "reparte"."scan_items" ALTER COLUMN "owner" SET DEFAULT 'unassigned';

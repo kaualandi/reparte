@@ -1,0 +1,5 @@
+dist
+.turbo
+.env
+.env.local
+*.tsbuildinfo

@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* Botões com largura cheia ou fixados ocupando a tela:
+   centralizar conteúdo (texto + ícone) para não ficar colado à esquerda. */
+button.w-full,
+a.w-full,
+button[class*="fixed bottom"],
+a[class*="fixed bottom"] {
+  justify-content: center;
+}

@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1778465498205,
+      "tag": "0000_public_zarek",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1778466839016,
+      "tag": "0001_parched_blink",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778467797946,
+      "tag": "0002_gigantic_spectrum",
+      "breakpoints": true
+    }
+  ]
+}

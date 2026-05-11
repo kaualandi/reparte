@@ -1,0 +1,9 @@
+Reparte — static JWT tokens
+================================
+user1:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc3ODQ2NTYwM30._BxKi3QAhywi2PhGoRkgVHh_mx7vH7CFVbsdxfo-VNs
+
+user2:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyMiIsImlhdCI6MTc3ODQ2NTYwM30.TN-MHXl1vhSGLZ5ogvB4hvIoQNBNVq1Sij50QhLMccQ
+
+Save each token in the corresponding device. They do not expire.
