@@ -1,0 +1,11 @@
+node_modules
+.turbo
+.cache
+.output
+dist
+build
+*.log
+.env
+.env.*
+!.env.example
+apps/api
