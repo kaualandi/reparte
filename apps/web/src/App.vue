@@ -24,7 +24,15 @@ const showBottomNav = computed(() => {
 <template>
   <UApp>
     <div class="min-h-screen flex flex-col">
-      <header class="border-b border-default px-4 py-3 flex items-center justify-between">
+      <header
+        class="border-b border-default px-4 flex items-center justify-between bg-default"
+        style="
+          padding-top: max(0.75rem, env(safe-area-inset-top));
+          padding-bottom: 0.75rem;
+          padding-left: max(1rem, env(safe-area-inset-left));
+          padding-right: max(1rem, env(safe-area-inset-right));
+        "
+      >
         <h1 class="text-lg font-semibold">{{ greeting }}</h1>
         <UButton
           v-if="auth.token"

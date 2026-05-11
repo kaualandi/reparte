@@ -55,13 +55,33 @@ function isScraperResponse(value: unknown): value is ScraperResponse {
   )
 }
 
+function normalizeQrUrl(raw: string): string {
+  const trimmed = raw.trim()
+  // QR Codes da SEFAZ-RJ trazem '|' literal no parâmetro `p=`. Esse caractere
+  // não é válido em URI estrito (RFC 3986). O scraper valida `format: 'uri'`,
+  // então precisamos percent-encoding antes de enviar.
+  try {
+    const url = new URL(trimmed)
+    const encodedSearch = url.search
+      .replace(/\|/g, '%7C')
+      .replace(/\^/g, '%5E')
+      .replace(/`/g, '%60')
+      .replace(/\{/g, '%7B')
+      .replace(/\}/g, '%7D')
+    return `${url.origin}${url.pathname}${encodedSearch}${url.hash}`
+  } catch {
+    return trimmed
+  }
+}
+
 export async function scrapeNFe(qrCodeUrl: string): Promise<NFeData> {
+  const normalizedUrl = normalizeQrUrl(qrCodeUrl)
   let response: Response
   try {
     response = await fetch(`${env.SCRAPER_URL}/nfe/scan`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ qrCodeUrl }),
+      body: JSON.stringify({ qrCodeUrl: normalizedUrl }),
     })
   } catch (err) {
     const error = new ScraperError(
