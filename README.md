@@ -91,16 +91,26 @@ por padrão).
 
 ### Frontend (Vercel)
 
-O `apps/web/vercel.json` já cobre Bun + Vite + PWA + SPA rewrites.
+O [`apps/web/vercel.json`](apps/web/vercel.json) já cobre Bun + Vite + PWA + SPA rewrites.
+O `installCommand` sobe pra raiz pra resolver os workspaces (`@reparte/types`),
+e o build roda dentro de `apps/web`.
 
 **Setup na Vercel (uma vez):**
 
 1. Criar novo projeto importando o repositório.
-2. **Root Directory** → `apps/web`. A Vercel detecta automaticamente Vite
-   e Bun (pelo `bun.lock` na raiz).
-3. **Environment Variables**:
-   - `VITE_API_URL` = URL pública da sua API (ex.: `https://api.kaualf.com`)
-4. Deploy.
+2. **Settings → General → Root Directory** → `apps/web`
+3. **Settings → General → Build & Development Settings**:
+   - "Override" desligado (deixe que o `vercel.json` cuide)
+   - Se aparecer Framework Preset, "Vite"
+4. **Settings → Environment Variables**:
+   - `VITE_API_URL` = URL pública da sua API (ex.: `https://reparte-api.kaualf.com`)
+5. Deploy.
+
+> Não deixe a Vercel "Detected Turbo" assumir o controle — o
+> `vercel.json` em `apps/web` + Root Directory corretamente apontado
+> evitam isso. Se ver `Detected Turbo. Adjusting default settings...` no
+> log seguido de comandos com `--filter`, é sinal de que o Root
+> Directory ficou vazio/raiz — corrija na UI.
 
 **Via CLI:**
 
