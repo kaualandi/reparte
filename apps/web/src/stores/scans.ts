@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 import type {
   ItemOwner,
+  ManualScanRequest,
   Scan,
   Scanner,
   ScanListEntry,
@@ -40,6 +41,17 @@ export const useScansStore = defineStore('scans', () => {
     if (!auth.userId) throw new Error('Not authenticated')
     const created = await http.post<ScanWithItems>('/scans', {
       qrCodeUrl,
+      scannedBy: auth.userId,
+    })
+    currentScan.value = created
+    return created
+  }
+
+  async function createManualScan(payload: Omit<ManualScanRequest, 'scannedBy'>): Promise<ScanWithItems> {
+    const auth = useAuthStore()
+    if (!auth.userId) throw new Error('Not authenticated')
+    const created = await http.post<ScanWithItems>('/scans/manual', {
+      ...payload,
       scannedBy: auth.userId,
     })
     currentScan.value = created
@@ -92,6 +104,7 @@ export const useScansStore = defineStore('scans', () => {
     fetchScans,
     fetchScan,
     createScan,
+    createManualScan,
     updateItemOwner,
     updatePaidBy,
     deleteScan,

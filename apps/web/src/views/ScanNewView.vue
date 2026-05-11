@@ -29,6 +29,12 @@ const options: Option[] = [
     description: 'Colar o link da NFC-e direto',
     route: 'scan-new-url',
   },
+  {
+    icon: 'i-lucide-pencil',
+    title: 'Adicionar manualmente',
+    description: 'Compra avulsa sem cupom fiscal (padaria, feira, etc.)',
+    route: 'scan-new-manual',
+  },
 ]
 </script>
 

@@ -5,6 +5,7 @@ import type {
   ItemOwner,
   Scan,
   ScanItem,
+  ScanKind,
   ScanListEntry,
   ScanWithItems,
 } from '@reparte/types'
@@ -13,7 +14,7 @@ import { authPlugin } from '../auth.ts'
 import { db } from '../db/index.ts'
 import type { ScanItemRow, ScanRow } from '../db/schema.ts'
 import { scanItems, scans } from '../db/schema.ts'
-import { numberToBRL, quantityToBRL } from '../lib/money.ts'
+import { numberToBRL, parseBRL, quantityToBRL } from '../lib/money.ts'
 import { ScraperError, scrapeNFe } from '../lib/scraper.ts'
 import { computeSplit } from '../lib/split.ts'
 
@@ -28,6 +29,10 @@ function isScanner(value: string): value is Scanner {
   return value === 'user1' || value === 'user2'
 }
 
+function isScanKind(value: string): value is ScanKind {
+  return value === 'nfce' || value === 'manual'
+}
+
 function rowToScan(row: ScanRow): Scan {
   if (!isScanner(row.scannedBy)) {
     throw new Error(`Invalid scannedBy value in DB: ${row.scannedBy}`)
@@ -38,6 +43,7 @@ function rowToScan(row: ScanRow): Scan {
   return {
     id: row.id,
     createdAt: row.createdAt.toISOString(),
+    kind: isScanKind(row.kind) ? row.kind : 'nfce',
     emitente: row.emitente,
     cnpj: row.cnpj,
     total: row.total,
@@ -136,6 +142,7 @@ export const scansRoutes = new Elysia({ prefix: '/scans' })
         const [scan] = await tx
           .insert(scans)
           .values({
+            kind: 'nfce',
             emitente: nfe.emitente.nome,
             cnpj: nfe.emitente.cnpj,
             total: numberToBRL(nfe.total),
@@ -181,6 +188,86 @@ export const scansRoutes = new Elysia({ prefix: '/scans' })
         qrCodeUrl: t.String({ minLength: 10 }),
         scannedBy: scannerSchema,
         paidBy: t.Optional(scannerSchema),
+      }),
+    },
+  )
+  .post(
+    '/manual',
+    async ({ body, set }) => {
+      const total = body.items.reduce((acc, it) => acc + parseBRL(it.valorTotal), 0)
+      const now = new Date()
+      const dataEmissao =
+        body.dataEmissao && body.dataEmissao.trim().length > 0
+          ? body.dataEmissao
+          : now.toLocaleString('pt-BR')
+
+      const inserted = await db.transaction(async (tx) => {
+        const [scan] = await tx
+          .insert(scans)
+          .values({
+            kind: 'manual',
+            emitente: body.emitente.trim(),
+            cnpj: null,
+            total: numberToBRL(total),
+            dataEmissao,
+            qrCodeUrl: null,
+            scannedBy: body.scannedBy,
+            paidBy: body.paidBy ?? body.scannedBy,
+          })
+          .returning()
+        if (!scan) throw new Error('Insert returned no row')
+
+        if (body.items.length > 0) {
+          await tx.insert(scanItems).values(
+            body.items.map((it) => {
+              const qtyStr = (it.quantidade ?? '').trim()
+              const qtyNum = parseBRL(qtyStr.length > 0 ? qtyStr : '1') || 1
+              const valor = parseBRL(it.valorTotal)
+              return {
+                scanId: scan.id,
+                nome: it.nome.trim(),
+                quantidade: qtyStr.length > 0 ? qtyStr : '1',
+                unidade: (it.unidade ?? 'UN').trim() || 'UN',
+                valorUnitario: numberToBRL(qtyNum > 0 ? valor / qtyNum : valor),
+                valorTotal: numberToBRL(valor),
+                owner: it.owner ?? 'unassigned',
+              }
+            }),
+          )
+        }
+
+        const items = await tx
+          .select()
+          .from(scanItems)
+          .where(eq(scanItems.scanId, scan.id))
+
+        return { scan, items }
+      })
+
+      const result: ScanWithItems = {
+        ...rowToScan(inserted.scan),
+        items: inserted.items.map(rowToItem),
+      }
+      set.status = 201
+      return result
+    },
+    {
+      auth: true,
+      body: t.Object({
+        emitente: t.String({ minLength: 1 }),
+        dataEmissao: t.Optional(t.String()),
+        scannedBy: scannerSchema,
+        paidBy: t.Optional(scannerSchema),
+        items: t.Array(
+          t.Object({
+            nome: t.String({ minLength: 1 }),
+            quantidade: t.Optional(t.String()),
+            unidade: t.Optional(t.String()),
+            valorTotal: t.String({ minLength: 1 }),
+            owner: t.Optional(ownerSchema),
+          }),
+          { minItems: 1 },
+        ),
       }),
     },
   )

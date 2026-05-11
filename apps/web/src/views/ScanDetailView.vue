@@ -75,7 +75,16 @@ async function remove(): Promise<void> {
       <div class="flex justify-between text-sm">
         <div>
           <p class="text-muted">{{ formatDateTime(scansStore.currentScan.createdAt) }}</p>
-          <p class="text-muted text-xs mt-1">CNPJ {{ scansStore.currentScan.cnpj }}</p>
+          <p v-if="scansStore.currentScan.cnpj" class="text-muted text-xs mt-1">
+            CNPJ {{ scansStore.currentScan.cnpj }}
+          </p>
+          <UBadge
+            v-else
+            color="neutral"
+            variant="subtle"
+            size="sm"
+            class="mt-1"
+          >Compra manual</UBadge>
         </div>
         <p class="font-semibold text-lg">{{ formatBRL(scansStore.currentScan.total) }}</p>
       </div>

@@ -12,6 +12,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/scan/new/camera', name: 'scan-new-camera', component: () => import('./views/ScanCameraView.vue') },
   { path: '/scan/new/upload', name: 'scan-new-upload', component: () => import('./views/ScanUploadView.vue') },
   { path: '/scan/new/url', name: 'scan-new-url', component: () => import('./views/ScanUrlView.vue') },
+  { path: '/scan/new/manual', name: 'scan-new-manual', component: () => import('./views/ScanManualView.vue') },
   { path: '/scan/:id', name: 'scan-detail', component: () => import('./views/ScanDetailView.vue'), props: true },
   { path: '/scan/:id/split', name: 'scan-split', component: () => import('./views/SplitView.vue'), props: true },
 ]

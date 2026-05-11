@@ -36,14 +36,17 @@ export interface ScraperErrorResponse {
   detail?: string
 }
 
+export type ScanKind = 'nfce' | 'manual'
+
 export interface Scan {
   id: string
   createdAt: string
+  kind: ScanKind
   emitente: string
-  cnpj: string
+  cnpj: string | null
   total: string
   dataEmissao: string
-  qrCodeUrl: string
+  qrCodeUrl: string | null
   scannedBy: Scanner
   paidBy: Scanner
 }
@@ -80,6 +83,22 @@ export interface ScanCreateRequest {
   qrCodeUrl: string
   scannedBy: Scanner
   paidBy?: Scanner
+}
+
+export interface ManualItemInput {
+  nome: string
+  quantidade?: string
+  unidade?: string
+  valorTotal: string
+  owner?: ItemOwner
+}
+
+export interface ManualScanRequest {
+  emitente: string
+  dataEmissao?: string
+  scannedBy: Scanner
+  paidBy?: Scanner
+  items: ManualItemInput[]
 }
 
 export interface ScanUpdateRequest {
