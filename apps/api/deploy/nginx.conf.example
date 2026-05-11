@@ -1,14 +1,14 @@
 # Reverse proxy do nginx para a API do Reparte.
-# Substitua api.kaualf.com pelo seu host real.
+# Substitua api.reparte.kaualf.com pelo seu host real.
 #
 # Instalação no EC2:
 #   sudo cp deploy/nginx.conf.example /etc/nginx/sites-available/reparte-api
 #   sudo ln -s /etc/nginx/sites-available/reparte-api /etc/nginx/sites-enabled/
 #   sudo nginx -t && sudo systemctl reload nginx
-#   sudo certbot --nginx -d api.kaualf.com   # certificado Let's Encrypt
+#   sudo certbot --nginx -d api.reparte.kaualf.com   # certificado Let's Encrypt
 server {
     listen 80;
-    server_name api.kaualf.com;
+    server_name api.reparte.kaualf.com;
 
     # certbot reescreve este bloco para HTTPS automaticamente.
     location / {
