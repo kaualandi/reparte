@@ -21,6 +21,7 @@ declare module 'vue' {
     UCard: typeof import('./../../node_modules/.bun/@nuxt+ui@3.3.7+abc061890ecc542e/node_modules/@nuxt/ui/dist/runtime/components/Card.vue')['default']
     UIcon: typeof import('./../../node_modules/.bun/@nuxt+ui@3.3.7+abc061890ecc542e/node_modules/@nuxt/ui/dist/runtime/vue/components/Icon.vue')['default']
     UInput: typeof import('./../../node_modules/.bun/@nuxt+ui@3.3.7+abc061890ecc542e/node_modules/@nuxt/ui/dist/runtime/components/Input.vue')['default']
+    UpdatePrompt: typeof import('./src/components/UpdatePrompt.vue')['default']
     URadioGroup: typeof import('./../../node_modules/.bun/@nuxt+ui@3.3.7+abc061890ecc542e/node_modules/@nuxt/ui/dist/runtime/components/RadioGroup.vue')['default']
     UTextarea: typeof import('./../../node_modules/.bun/@nuxt+ui@3.3.7+abc061890ecc542e/node_modules/@nuxt/ui/dist/runtime/components/Textarea.vue')['default']
   }

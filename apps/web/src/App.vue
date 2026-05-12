@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import BottomNav from './components/BottomNav.vue'
+import UpdatePrompt from './components/UpdatePrompt.vue'
 import { USER_NAMES } from './config'
 import { useAuthStore } from './stores/auth'
 import TokenGate from './views/TokenGate.vue'
@@ -23,7 +24,8 @@ const showBottomNav = computed(() => {
 
 <template>
   <UApp>
-    <div class="h-full flex flex-col">
+    <div class="h-dvh flex flex-col">
+      <UpdatePrompt />
       <header
         class="border-b border-default px-4 flex items-center justify-between bg-default"
         style="
