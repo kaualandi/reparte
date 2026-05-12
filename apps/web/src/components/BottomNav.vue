@@ -25,7 +25,7 @@ function isActive(to: string): boolean {
 
 <template>
   <nav
-    class="fixed bottom-0 left-0 right-0 border-t border-default bg-default pb-[env(safe-area-inset-bottom)] z-40"
+    class="shrink-0 border-t border-default bg-default pb-[env(safe-area-inset-bottom)]"
   >
     <div class="flex max-w-2xl mx-auto">
       <button

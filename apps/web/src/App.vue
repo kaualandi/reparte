@@ -23,7 +23,7 @@ const showBottomNav = computed(() => {
 
 <template>
   <UApp>
-    <div class="min-h-screen flex flex-col">
+    <div class="h-full flex flex-col">
       <header
         class="border-b border-default px-4 flex items-center justify-between bg-default"
         style="
@@ -43,7 +43,7 @@ const showBottomNav = computed(() => {
           @click="auth.clear()"
         />
       </header>
-      <main class="flex-1" :class="{ 'pb-20': showBottomNav }">
+      <main class="flex-1 min-h-0 overflow-y-auto">
         <TokenGate v-if="!auth.token" />
         <RouterView v-else />
       </main>
