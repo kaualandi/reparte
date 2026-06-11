@@ -59,7 +59,7 @@ function monthLabel(): string {
   const [y, m] = itemsStore.month.split('-')
   if (!y || !m) return itemsStore.month
   const date = new Date(Date.UTC(Number(y), Number(m) - 1, 1))
-  return date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+  return date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric', timeZone: 'UTC' })
 }
 
 async function changeMonth(delta: number): Promise<void> {
